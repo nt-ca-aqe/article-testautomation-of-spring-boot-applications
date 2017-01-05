@@ -713,8 +713,9 @@ public class ApplicationSystemTest {
 With our unit-scoped test, we check specific functionality of each unit under
 test. Our integration-scoped tests verify that we are using framework features
 (caching, Spring Data, etc.) correctly. But all of these tests were only using
-parts of our application. In order to make sure that the application as a whole
-is working as intended, we have to have a small number of End-2-End smoke tests.
+isolated parts of our application. In order to make sure that the application as
+a whole is working as intended, we have to have a small number of End-2-End
+smoke tests.
 
 These tests will use a completely booted up version of our software (see the
 above test) and a real database instance. Depending on the nature of your
