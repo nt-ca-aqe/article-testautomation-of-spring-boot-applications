@@ -8,15 +8,15 @@ application:
 
 The application consists of 4 major packages: `api`, `business`, `persistence`
 and `ui`. They represent the different logical layers of the application. Within
-these layers there are packages for generall concerns (e.g. common businness
+these layers there are packages for general concerns (e.g. common business
 exceptions) and packages for special domain concerns (e.g.
 `com.example.sbms.business.foo` containing all `Foo` related components and
 services). Grouping classes in packages firstly by their layer and secondly by
 their functional affiliation allows us to selectively start parts of our
-application. This is very usefull for integration-scoped or even system-scoped
-tests. You could, as an example, start you application's API layer without
+application. This is very useful for integration-scoped or even system-scoped
+tests. You could, as an example, start your application's API layer without
 having to have a database - or even a business layer - simply by telling Spring
-to only scane the `com.example.sbms.api` package for beans. Missing dependencies
+to only scan the `com.example.sbms.api` package for beans. Missing dependencies
 can easily be mocked using Spring's own testing framework.
 
 The source folder of this application would look something like this:
@@ -71,7 +71,7 @@ before reading any further:
 
 - Spring
 - Spring Boot
-- Testautomation (ideally with JUnit)
+- Test automation (ideally with JUnit)
 - Assertions (ideally with AssertJ)
 - Mocking (ideally with Mockito)
 
@@ -79,25 +79,25 @@ before reading any further:
 
 When writing automated tests, it is important to know what should be tested how
 and what the scope of the test should be. When working with Spring Boot I
-usually devide my tests into three scopes:
+usually divide my tests into three scopes:
 
 - Unit
 - Integration
 - System
 
-Each of these has it's own uses and constraints and each builds the basis for
-the next scope. Wehn executing a build, the unit-scoped tests should run first.
-They are the most numerous and the fastes. If any of them break, the build
-should imidiatly fail without executing any other tests of higher scopes. If all
-unit-scoped tests passs, the integration-scoped tests are executed. These will
+Each of these has its own uses and constraints and each builds the basis for
+the next scope. When executing a build, the unit-scoped tests should run first.
+They are the most numerous and the fastest. If any of them break, the build
+should immediately fail without executing any other tests of higher scopes. If all
+unit-scoped tests pass, the integration-scoped tests are executed. These will
 verify our usage of framework features and the integration of different parts of
-the application. Last but not least the system-scoped tests wil be executed.
-These are the only tests which are allowd to block system resources (like
+the application. Last but not least the system-scoped tests will be executed.
+These are the only tests which are allowed to block system resources (like
 sockets, ports, databases etc.).
 
-Mor on each of those, when we come to them in the following chapters.
+More on each of those, when we come to them in the following chapters.
 
-The code example in this articale will make use of these technologies:
+The code example in this article will make use of these technologies:
 - JUnit 5 as a runner for most tests
 - JUnit 4 as a runner for tests which need the Spring JUnit Runner
 - AssertJ for assertions
@@ -114,23 +114,23 @@ everything there might be exceptions to the rule!
 
 Most unit-scoped tests will invoke a single method with a given set of input
 data and a previously established state of the unit under test. Each of these
-tests should focus on a single aspect of the invoktion to be tested. Don't mix
+tests should focus on a single aspect of the invocation to be tested. Don't mix
 multiple aspects together or you'll get unit test that fail for hard to identify
 reasons.
 
-We'll not go into any more datail on the genrall topic of unit tests since these
+We will not go into any more detail on the general topic of unit tests since these
 are well established principles and nothing special to Spring Boot applications.
 
 #### Testing API DTO Serialization
 
 Since the data transfer objects (DTO) used in our API will be serialized and
 de-serialized as/from JSON or XML, we need to assert that this can be done
-without any problems. There are a supprising amount of things which can go wrong
+without any problems. There are a surprising amount of things that can go wrong
 when serializing Java objects.
 
-Testing (de-)serialization is rather simple and inexpensive. Simple serialize a
-given object into JSON / XML and then use that result to de-seriaialize it back
-to it's original form. With AssertJ the asserion of the result of these
+Testing (de-)serialization is rather simple and inexpensive. Simply serialize a
+given object into JSON / XML and then use that result to de-serialize it back
+to its original form. With AssertJ the assertion of the result of these
 operations is pretty simple. Just check for equality of the original object and
 the de-serialized version.
 
@@ -141,7 +141,7 @@ should therefore always implement `equals()` and `hashcode()`. With Lombok's
 code. In addition DTOs should only consist of Java basic types (`String`,
 `boolean`, `int` etc.) and other DTOs.
 
-Now lets take a look at this simple DTO:
+Now let’s take a look at this simple DTO:
 
 ```java
 @Data
@@ -184,7 +184,7 @@ to inherit multiple such traits from different interfaces.
 public interface DtoStereotypeTest {
 
   default void assertJsonSerializable(Object object) throws IOException {
-    ObjectMapper mapper = new ObjectMapper()
+    ObjectMapper mapper = new ObjectMapper();
     String jsonObject = mapper.writeValueAsString(object);
     Object deserializedObject = mapper.readValue(jsonObject, object.getClass());
     assertThat(deserializedObject).isEqual(object);
@@ -199,8 +199,8 @@ public interface DtoStereotypeTest {
 
 #### Basic Unit Test
 
-A simple example of a basic unit test are transformers. They are rather simple
-services which makes them ideal for testing.
+We will use transformers to demonstrate a basic unit test, since they are rather simple
+services and ideal for testing.
 
 ```java
 @Service
@@ -235,15 +235,15 @@ public class PersistedFooBoToDtoTransformerTest {
 ```
 
 Most other kinds of components and services are unit testable as well. But a lot
-of functionallity in the world of Spring is triggered by the presents of
-annotations. In the next chapter we'll se an example of something, that is not
+of functionality in the world of Spring is triggered by the presence of
+annotations. In the next chapter we'll see an example of something that is not
 unit-, but integration testable: Caching
 
 ### Integration Scope
 
-Integration  tests focus on verifying the use of framework features like
+Integration tests focus on verifying the use of framework features like
 caching, conditional dependency injection, aspects / interceptors etc. They also
-include tests which access resources like the file system, multithreadding,
+include tests which access resources like the file system, multithreading,
 system clock etc.
 
 Since these kinds of test usually take some time to initialize some kind of
@@ -256,20 +256,20 @@ single part of it!
 
 #### Testing Spring Framework Usage
 
-With Spring Test support, it is very easy to integration test your application's
+With Spring Test support, it's very easy to integration test your applications
 use of Spring framework features.
 
 Let's say we wanted to test the use of caching by the `FooService` business
 service. This service is located in the `com.example.sbms.business.foo` package.
 Within this package there are also some other component classes which are used
 by the `FooService`. Since all of them already have unit test covering their
-functionallity, we can create a light weight Spring context, containing only the
+functionality, we can create a lightweight Spring context, containing only the
 components and services of that package. All missing dependencies are mocked
 with `@MockBean`.
 
 The `SpringBootTest` annotation will detect the inner `@Configuration` class and
 use it as a basis for the test context. In case no inner configuration is
-specified the original application will be started. So be carefull to always
+specified the original application will be started. So be careful to always
 limit your test scope to the bare minimum to test what you have to test!
 
 ```java
@@ -308,7 +308,7 @@ public class FooServiceIntTest {
 }
 ```
 
-> NOTE: Currenlty there is no released Spring version with JUnit 5 support.
+> NOTE: Currently there is no released Spring version with JUnit 5 support.
 > There is however a JUnit 5 extension within the current Spring 5 snapshot.
 > Functionally the JUnit 4 Runner and the JUnit 5 extension will be equal.
 
@@ -320,19 +320,19 @@ scope level however, there are much more interesting things to test:
 
 - path mapping
 - response status
-- conten types
+- content types
 - serialization
 - exception handling
 
-Spring's MockMvc framework allows us to test a REST controller's functionallity
+Springs MockMvc framework allows us to test a REST controllers functionality
 completely without having to start up an application, or even having to create a
 spring context. Simply create an instance of the controller, mock the business
 layer classes, use real transformers (since they are already unit tested at this
 point) and make some REST calls.
 
-There is not realy any downside to testing REST controllers only on the
+There is not really any downside to testing REST controllers only on the
 integration level. All the logic that would be tested in unit test would have
-also been tested here anyway. Event the runtime should not be an issue since
+also been tested here anyway. Even the runtime should not be an issue since
 MockMvc only adds about 10-30ms to your test runtime.
 
 ```java
@@ -539,17 +539,17 @@ public interface RestControllerStereotypeTest {
 
 Integration testing your Spring Data (JPA) classes like `Entity` and
 `Repository` with Spring Boot is super easy. Spring's `@DataJpaTest` in
-combination with Spring's JUnit runner provides the test with a Spring context,
+combination with Springs JUnit runner provides the test with a Spring context,
 which will include all known `@Entity` classes and `Repository` beans. All other
 `@Component` or `@Service` beans will be ignored.
 
-This context will als inlcude an in-memory database. This database will be
+This context will also include an in-memory database. This database will be
 rolled back after each executed test. You could configure the test to use the
 default external database and even change the default rollback behavior, but for
 integration test purposes, in-memory is the ideal setup.
 
 **Note:** The intent for integration level test of your persistence classes is
-to check your entity model's correctness and your queries. All other kinds of
+to check your entity models correctness and your queries. All other kinds of
 tests (e.g. triggers or function inside the 'production' database) should be
 done as system-scoped tests.
 
@@ -592,19 +592,19 @@ public class FooRepositoryIntTest {
 #### Integration-Testing (Graphical) User Interfaces
 
 UI Tests are slow - very very slow! But you can make them a little faster, and
-easier to controll, by slicing your application. As seen with integration tests,
+easier to control, by slicing your application. As seen with integration tests,
 Spring gives you the option to start only parts of your application. This can be
-usefull when executing UI tests, since it allows you to boot up the real UI, but
+useful when executing UI tests, since it allows you to boot up the real UI, but
 replace parts of your application with mocks or stub implementations.
 
 In the following example, we start our application just with the classes of the
 `com.example.sbms.ui.foo` and `com.example.sbms.business.foo` packages. Since
 services of this package are calling the `FooPersistenceService` from the
 persistence layer, we provide a very fast in-memory implementation of this
-service in order to have full controlle over our testdata, without having to
+service in order to have full control over our test data, without having to
 interact with a cumbersome database.
 
-To prevent port collissions, we tell spring to start the container on a random
+To prevent port collisions, we tell spring to start the container on a random
 free port. This port is then injected into the test using `@LocalServerPort`.
 This way, we can execute multiple UI tests in parallel, each having his own port
 and application context.
@@ -679,23 +679,23 @@ public class FooControllerUiTest {
 
 ### System Scope
 
-System-scoped tests are generally the most constly to run and write. In
-difference to integration tests, system tests will block resources of your
-maschine (ports, sockets, database etc.). They often are based on booting up the
+System-scoped tests are generally the most costly to run and write. In contrast 
+to integration tests, system tests will block resources of your
+machine (ports, sockets, database etc.). They often are based on booting up the
 complete application under near real conditions.
 
 #### Smoke-Testing Your Application
 
-The first and most important system-scoped test ist the 'startup smoke test'.
+The first and most important system-scoped test is the 'startup smoke test'.
 This test simply starts the spring application and shuts it down right after.
-The purpos of this test is to make sure, that all the dependency injection (and
-other framework features) could be performend. If the application can't start
+The purpose of this test is to make sure, that all the dependency injection (and
+other framework features) could be performed. If the application can't start
 for some reason, an exception will break the test.
 
-In order for this test to run sucessfully, external dependencies like a databse
+In order for this test to run successfully, external dependencies like a database
 and such, must be available! Any required configuration (e.g. test database
-connection) must be done externaly via an `application.properties` or
-`applciation.yml` file.
+connection) must be done externally via an `application.properties` or
+`application.yml` file.
 
 ```java
 public class ApplicationSystemTest {
@@ -710,8 +710,8 @@ public class ApplicationSystemTest {
 
 #### End-2-End Testing Your Application
 
-With our unit-scoped test, we check specific functionallity of each unit under
-test. Our integration-scoped tests verify, that we are using framework features
+With our unit-scoped test, we check specific functionality of each unit under
+test. Our integration-scoped tests verify that we are using framework features
 (caching, Spring Data, etc.) correctly. But all of these tests were only using
 parts of our application. In order to make sure that the application as a whole
 is working as intended, we have to have a small number of End-2-End smoke tests.
@@ -720,9 +720,9 @@ These tests will use a completely booted up version of our software (see the
 above test) and a real database instance. Depending on the nature of your
 application and what other external services are called during normal
 operations, you might want to replace very specific classes with mocks. (e.g.
-gateways to external services, over which you don't have controll)
+gateways to external services, over which you don't have control)
 
-> The system-scope ends where your direct controll over your external
+> The system-scope ends where your direct control over your external
 > dependencies ends!
 
 A typical End-2-End test would look something like this:
@@ -765,13 +765,13 @@ implementation for your API. This would make it easier to write system tests
 as well as provide a basic "native" interface for Java based clients. Spring
 Cloud has an integration project for Netflix's "Feign" library. It allows
 you to generate a Java REST client at runtime by using the REST controller
-specification (methods and annotations). In order to do so, you would normaly
-declare the REST specifiction on an interface and package this interface with
+specification (methods and annotations). In order to do so, you would normally
+declare the REST specification on an interface and package this interface with
 all the relevant DTO classes as a separate module. The REST controllers would
 then just implement the interface in order to provide the service sind. The
-client would then use Feign to comunicate with the server using the interface.
+client would then use Feign to communicate with the server using the interface.
 
-## Usefull Links
+## Useful Links
 
 - [Spring Test Documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-testing.html)
 - [Soring Cloud Overview](http://cloud.spring.io/spring-cloud-netflix/spring-cloud-netflix.html)
