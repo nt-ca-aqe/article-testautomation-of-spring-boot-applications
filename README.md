@@ -17,7 +17,7 @@ application. This is very useful for integration-scoped or even system-scoped
 tests. You could, as an example, start your application's API layer without
 having to have a database - or even a business layer - simply by telling Spring
 to only scan the `com.example.sbms.api` package for beans. Missing dependencies
-can easily be mocked using Spring's own testing framework.
+can easily be mocked using Springs own testing framework.
 
 The source folder of this application would look something like this:
 
@@ -115,7 +115,7 @@ everything there might be exceptions to the rule!
 Most unit-scoped tests will invoke a single method with a given set of input
 data and a previously established state of the unit under test. Each of these
 tests should focus on a single aspect of the invocation to be tested. Don't mix
-multiple aspects together or you'll get unit test that fail for hard to identify
+multiple aspects together or you'll get unit tests that fail for hard to identify
 reasons.
 
 We will not go into any more detail on the general topic of unit tests since these
@@ -768,7 +768,7 @@ you to generate a Java REST client at runtime by using the REST controller
 specification (methods and annotations). In order to do so, you would normally
 declare the REST specification on an interface and package this interface with
 all the relevant DTO classes as a separate module. The REST controllers would
-then just implement the interface in order to provide the service sind. The
+then just implement the interface in order to provide the service. The
 client would then use Feign to communicate with the server using the interface.
 
 ## Useful Links
