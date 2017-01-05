@@ -713,8 +713,9 @@ public class ApplicationSystemTest {
 With our unit-scoped test, we check specific functionality of each unit under
 test. Our integration-scoped tests verify that we are using framework features
 (caching, Spring Data, etc.) correctly. But all of these tests were only using
-parts of our application. In order to make sure that the application as a whole
-is working as intended, we have to have a small number of End-2-End smoke tests.
+isolated parts of our application. In order to make sure that the application as
+a whole is working as intended, we have to have a small number of End-2-End
+smoke tests.
 
 These tests will use a completely booted up version of our software (see the
 above test) and a real database instance. Depending on the nature of your
@@ -768,7 +769,7 @@ you to generate a Java REST client at runtime by using the REST controller
 specification (methods and annotations). In order to do so, you would normally
 declare the REST specification on an interface and package this interface with
 all the relevant DTO classes as a separate module. The REST controllers would
-then just implement the interface in order to provide the service sind. The
+then just implement the interface in order to provide the service. The
 client would then use Feign to communicate with the server using the interface.
 
 ## Useful Links
