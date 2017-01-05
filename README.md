@@ -336,7 +336,6 @@ also been tested here anyway. Even the runtime should not be an issue since
 MockMvc only adds about 10-30ms to your test runtime.
 
 ```java
-@ResponseBody
 @RestController
 @AllArgsConstructor // for constructor injection
 @RequestMapping(path = "/api/v1/foos", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
